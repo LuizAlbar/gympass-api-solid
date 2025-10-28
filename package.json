@@ -1,0 +1,32 @@
+{
+  "name": "gympass-app",
+  "version": "1.0.0",
+  "description": "Gympass style app",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "tsx watch src/server.ts",
+    "start": "node build/server.js",
+    "build": "tsup src --out-dir build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.18.1",
+  "dependencies": {
+    "dotenv": "17.2.3",
+    "fastify": "5.6.1",
+    "zod": "4.1.12"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.38.0",
+    "@types/node": "24.9.2",
+    "eslint": "9.38.0",
+    "globals": "16.4.0",
+    "jiti": "2.6.1",
+    "tsup": "8.5.0",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.46.2"
+  }
+}

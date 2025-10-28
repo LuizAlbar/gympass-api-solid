@@ -1,0 +1,45 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependency directories
+node_modules/
+
+# Build artifacts
+dist/
+build/
+out/
+.next/ # Next.js specific build output
+.nuxt/ # Nuxt.js specific build output
+
+# Editor directories and files
+.vscode/ # VSCode specific settings (optional, can be included if shared)
+!.vscode/extensions.json # Allow extensions.json to be committed if desired
+.idea/ # IntelliJ IDEA specific settings
+.DS_Store # macOS specific
+*.suo # Visual Studio specific
+*.ntvs* # Visual Studio specific
+*.njsproj # Visual Studio specific
+*.sln # Visual Studio specific
+*.sw? # Vim swap files
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Test coverage
+coverage/
+
+# Misc
+*.tgz
+.npmrc
+.yarnrc
+.pnpm-store/
