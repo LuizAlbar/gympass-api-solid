@@ -43,3 +43,4 @@ coverage/
 .npmrc
 .yarnrc
 .pnpm-store/
+/generated/prisma
