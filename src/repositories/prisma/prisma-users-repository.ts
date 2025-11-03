@@ -1,10 +1,14 @@
 import { prisma } from "@/lib/prisma.ts"
-import { Prisma } from "@prisma/client"
+import { Prisma, User } from "@prisma/client"
 import { UsersRepository } from "../users-repository.ts"
 
 
 
 export class PrismaUserRepository implements UsersRepository{
+
+    async findById(id: string): Promise<User | null> {
+        throw new Error("Method not implemented.")
+    }
 
     async findByEmail(email: string) {
 
