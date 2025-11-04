@@ -3,24 +3,26 @@ import { InMemoryCheckInsRepository } from "@/repositories/in-memory/in-memory-c
 import { CheckInUseCase } from "./check-in.ts";
 import { InMemoryGymsRepository } from "@/repositories/in-memory/in-memory-gyms-repository.ts";
 import { Decimal } from "@prisma/client/runtime/library";
+import { MaxNumberOfCheckInsError } from "./errors/max-number-of-check-ins-error.ts";
+import { MaxDistanceError } from "./errors/max-distance-error.ts";
 
 let checkInsRepository: InMemoryCheckInsRepository;
 let gymsRepository: InMemoryGymsRepository;
 let sut: CheckInUseCase;
 
 describe("Check-in Use Case", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     checkInsRepository = new InMemoryCheckInsRepository();
     gymsRepository = new InMemoryGymsRepository();
     sut = new CheckInUseCase(checkInsRepository, gymsRepository);
 
-    gymsRepository.items.push({
+    await gymsRepository.create({
       id: "gym-01",
       title: "My Gym",
       description: "",
       phone: "",
-      latitude: new Decimal(-7.2559995),
-      longitude: new Decimal(-35.9261013),
+      latitude: -7.2559995,
+      longitude: -35.9261013,
     });
 
     vi.useFakeTimers();
@@ -33,8 +35,8 @@ describe("Check-in Use Case", () => {
     const { checkIn } = await sut.execute({
       gymId: "gym-01",
       userId: "user-01",
-      userLatitude: 0,
-      userLongitude: 0,
+      userLatitude: -7.2559995,
+      userLongitude: -35.9261013,
     });
 
     expect(checkIn.id).toEqual(expect.any(String));
@@ -45,18 +47,18 @@ describe("Check-in Use Case", () => {
     await sut.execute({
       gymId: "gym-01",
       userId: "user-01",
-      userLatitude: 0,
-      userLongitude: 0,
+      userLatitude: -7.2559995,
+      userLongitude: -35.9261013,
     });
 
     await expect(() =>
       sut.execute({
         gymId: "gym-01",
         userId: "user-01",
-        userLatitude: 0,
-        userLongitude: 0,
+        userLatitude: -7.2559995,
+        userLongitude: -35.9261013,
       }),
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(MaxNumberOfCheckInsError);
   });
 
   it("should be able to check in twice but in different days", async () => {
@@ -64,8 +66,8 @@ describe("Check-in Use Case", () => {
     await sut.execute({
       gymId: "gym-01",
       userId: "user-01",
-      userLatitude: 0,
-      userLongitude: 0,
+      userLatitude: -7.2559995,
+      userLongitude: -35.9261013,
     });
 
     vi.setSystemTime(new Date(2022, 0, 21, 8, 0, 0));
@@ -73,8 +75,8 @@ describe("Check-in Use Case", () => {
     const { checkIn } = await sut.execute({
       gymId: "gym-01",
       userId: "user-01",
-      userLatitude: 0,
-      userLongitude: 0,
+      userLatitude: -7.2559995,
+      userLongitude: -35.9261013,
     });
 
     expect(checkIn.id).toEqual(expect.any(String));
@@ -90,13 +92,13 @@ describe("Check-in Use Case", () => {
       longitude: new Decimal(-35.9261013),
     });
 
-    const { checkIn } = await sut.execute({
-      gymId: "gym-02",
-      userId: "user-01",
-      userLatitude: -7.1888581,
-      userLongitude: -35.8648606,
-    });
-
-    expect(checkIn.id).toEqual(expect.any(String));
+    await expect(() =>
+      sut.execute({
+        gymId: "gym-02",
+        userId: "user-01",
+        userLatitude: -7.1888581,
+        userLongitude: -35.8648606,
+      }),
+    ).rejects.toBeInstanceOf(MaxDistanceError);
   });
 });
