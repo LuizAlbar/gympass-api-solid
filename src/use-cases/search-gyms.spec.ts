@@ -13,14 +13,14 @@ describe("Search Gyms Use Case", () => {
 
   it("should be able to search for gyms", async () => {
     await gymsRepository.create({
-      title: 'JavaScript Gym',
+      title: "JavaScript Gym",
       description: null,
       phone: null,
       latitude: -7.2559995,
       longitude: -35.9261013,
     });
     await gymsRepository.create({
-      title: 'TypeScript Gym',
+      title: "TypeScript Gym",
       description: null,
       phone: null,
       latitude: -7.2559995,
@@ -28,13 +28,13 @@ describe("Search Gyms Use Case", () => {
     });
 
     const { gyms } = await sut.execute({
-      query: 'JavaScript',
-      page: 1
+      query: "JavaScript",
+      page: 1,
     });
 
     expect(gyms).toHaveLength(1);
     expect(gyms).toEqual([
-      expect.objectContaining({ title: "JavaScript Gym" })
+      expect.objectContaining({ title: "JavaScript Gym" }),
     ]);
   });
 
@@ -50,8 +50,8 @@ describe("Search Gyms Use Case", () => {
     }
 
     const { gyms } = await sut.execute({
-      query: 'JavaScript',
-      page: 2
+      query: "JavaScript",
+      page: 2,
     });
 
     expect(gyms).toHaveLength(2);
